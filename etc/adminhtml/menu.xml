@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <!-- create new admin menu ( left panel ) item -->
+        <add id="Smile_Contacts::smile_core"
+             title="Smile"
+             module="Smile_Contacts"
+             sortOrder="100"
+             resource="Smile_Contacts::smile_core" />
+
+        <add id="Smile_Contacts::contacts"
+             title="Contacts"
+             translate="title"
+             sortOrder="10"
+             module="Smile_Contacts"
+             parent="Smile_Contacts::smile_core"
+             resource="Smile_Contacts::smile_core"/>
+
+        <add id="Smile_Contacts::questions"
+             title="Questions"
+             module="Smile_Contacts"
+             sortOrder="10"
+             parent="Smile_Contacts::contacts"
+             action="contacts/question"
+             resource="Smile_Contacts::smile_core" />
+    </menu>
+</config>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Smile_Contacts::smile_core" title="Smile Core">
+                    <resource id="Smile_Contacts::contacts" title="Contacts" translate="title" sortOrder="10">
+                        <resource id="Smile_Contacts::questions" title="Question list" translate="title" sortOrder="10">
+                            <resource id="Smile_Contacts::question_save" title="Save Question" translate="title" sortOrder="10" />
+                            <resource id="Smile_Contacts::question_delete" title="Delete Question" translate="title" sortOrder="20" />
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>
