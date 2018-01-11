@@ -13,7 +13,7 @@ class DataProvider extends AbstractDataProvider
     /**
      * @var \Smile\Contacts\Model\ResourceModel\Question\Collection
      */
-    private $collection;
+    protected $collection;
 
     /**
      * @var DataPersistorInterface
