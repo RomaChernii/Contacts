@@ -13,7 +13,7 @@ class Collection extends AbstractCollection
      *
      * @return void
      */
-    protected function _construct()
+    public function _construct()
     {
         $this->_init('Smile\Contacts\Model\Question', 'Smile\Contacts\Model\ResourceModel\Question');
     }

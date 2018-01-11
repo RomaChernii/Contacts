@@ -13,12 +13,12 @@ class GenericButton
     /**
      * @var Context
      */
-    protected $context;
+    private $context;
 
     /**
      * @var QuestionRepositoryInterface
      */
-    protected $questionRepository;
+    private $questionRepository;
 
     /**
      * @param Context $context

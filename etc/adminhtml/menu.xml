@@ -2,7 +2,6 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <!-- create new admin menu ( left panel ) item -->
         <add id="Smile_Contacts::smile_core"
              title="Smile"
              module="Smile_Contacts"

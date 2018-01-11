@@ -5,7 +5,7 @@ use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\Model\AbstractModel;
 use Smile\Contacts\Api\Data\QuestionInterface;
 
-class Question  extends AbstractModel implements QuestionInterface, IdentityInterface
+class Question extends AbstractModel implements QuestionInterface, IdentityInterface
 {
     /**
      * Smile question cache tag
@@ -22,19 +22,19 @@ class Question  extends AbstractModel implements QuestionInterface, IdentityInte
     /**
      * @var string
      */
-    protected $_cacheTag = 'smile_question';
+    public $cacheTag = 'smile_question';
 
     /**
      * Prefix of model events names
      *
      * @var string
      */
-    protected $_eventPrefix = 'smile_question';
+    public $eventPrefix = 'smile_question';
 
     /**
      * @return void
      */
-    protected function _construct()
+    public function _construct()
     {
         $this->_init('Smile\Contacts\Model\ResourceModel\Question');
     }

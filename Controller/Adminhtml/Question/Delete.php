@@ -4,7 +4,6 @@ namespace Smile\Contacts\Controller\Adminhtml\Question;
 use Magento\Backend\App\Action;
 use Smile\Contacts\Api\QuestionRepositoryInterface;
 
-
 class Delete extends Action
 {
     /**
@@ -17,7 +16,7 @@ class Delete extends Action
     /**
      * @var \Smile\Contacts\Api\QuestionRepositoryInterface
      */
-    protected $model;
+    private $model;
 
     /**
      * @param Action\Context $context
@@ -37,28 +36,21 @@ class Delete extends Action
      */
     public function execute()
     {
-        // check if we know what should be deleted
         $id = $this->getRequest()->getParam('question_id');
         /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($id) {
             try {
-                // init model and delete
                 $model = $this->model;
                 $model->deleteById($id);
-                // display success message
                 $this->messageManager->addSuccess(__('The question has been deleted.'));
                 return $resultRedirect->setPath('*/*/');
             } catch (\Exception $e) {
-                // display error message
                 $this->messageManager->addError($e->getMessage());
-                // go back to edit form
                 return $resultRedirect->setPath('*/*/edit', ['question_id' => $id]);
             }
         }
-        // display error message
         $this->messageManager->addError(__('We can\'t find a question to delete.'));
-        // go to grid
         return $resultRedirect->setPath('*/*/');
     }
 }

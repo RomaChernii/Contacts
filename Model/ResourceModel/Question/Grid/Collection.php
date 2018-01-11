@@ -7,14 +7,15 @@ use Magento\Framework\View\Element\UiComponent\DataProvider\Document;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Smile\Contacts\Model\ResourceModel\Question\Collection as QuestionCollection;
 use Smile\Contacts\Model\ResourceModel\Question;
+
 /**
  * Collection for displaying grid of Contacts questions
  */
 class Collection extends QuestionCollection implements SearchResultInterface
 {
-    protected $aggregations;
+    private $aggregations;
 
-    protected function _construct()
+    public function _construct()
     {
         $this->_init(Document::class, Question::class);
     }

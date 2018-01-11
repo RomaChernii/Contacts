@@ -17,7 +17,7 @@ class Index extends Action
     /**
      * @var PageFactory
      */
-    protected $resultPageFactory;
+    private $resultPageFactory;
 
     /**
      * @param Context $context
@@ -44,9 +44,6 @@ class Index extends Action
         $resultPage->addBreadcrumb(__('Smile'), __('Smile'));
         $resultPage->addBreadcrumb(__('Manage Questions'), __('Manage Questions'));
         $resultPage->getConfig()->getTitle()->prepend(__('Questions'));
-
-        $dataPersistor = $this->_objectManager->get('Magento\Framework\App\Request\DataPersistorInterface');
-        $dataPersistor->clear('contacts_questions');
 
         return $resultPage;
     }

@@ -2,30 +2,26 @@
 namespace Smile\Contacts\Plugin;
 
 use Magento\Contact\Controller\Index\Post as Subject;
-use Magento\Framework\Json\EncoderInterface as Encoder;
 use Magento\Framework\App\Request\Http;
-use Magento\Store\Model\StoreManagerInterface;
 use Smile\Contacts\Model\QuestionFactory;
 
 class AddContactPostQuestion
 {
-    protected $_request;
-    protected $_questionFactory;
-    protected $_storeManager;
+    private $request;
+
+    private $questionFactory;
 
     public function __construct(
-        Http $_request,
-        QuestionFactory $_questionFactory,
-        StoreManagerInterface $_storeManager
+        Http $request,
+        QuestionFactory $questionFactory
     ) {
-        $this->_request = $_request;
-        $this->_questionFactory = $_questionFactory;
-        $this->_storeManager = $_storeManager;
+        $this->request = $request;
+        $this->questionFactory = $questionFactory;
     }
 
     public function beforeExecute(Subject $subject)
     {
-        $post = $this->_request->getPostValue();
+        $post = $this->request->getPostValue();
         if (!$post) {
             return;
         }
@@ -44,7 +40,7 @@ class AddContactPostQuestion
                 $error = true;
             }
             if (!$error) {
-                $question = $this->_questionFactory->create();
+                $question = $this->questionFactory->create();
                 $question->setData($post)
                     ->setPhone(trim($post['telephone']))
                     ->setContent(trim($post['comment']))

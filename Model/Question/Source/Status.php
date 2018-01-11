@@ -12,7 +12,7 @@ class Status implements OptionSourceInterface
     /**
      * @var \Smile\Contacts\Model\Question
      */
-    protected $question;
+    private $question;
 
     /**
      * Constructor

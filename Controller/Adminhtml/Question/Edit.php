@@ -21,17 +21,17 @@ class Edit extends Action
      *
      * @var \Magento\Framework\Registry
      */
-    protected $_coreRegistry;
+    private $coreRegistry;
 
     /**
      * @var \Magento\Framework\View\Result\PageFactory
      */
-    protected $resultPageFactory;
+    private $resultPageFactory;
 
     /**
      * @var \Smile\contacts\Api\QuestionRepositoryInterface
      */
-    protected $questionRepository;
+    private $questionRepository;
 
     /**
      * @param Action\Context $context
@@ -55,9 +55,8 @@ class Edit extends Action
      *
      * @return \Magento\Backend\Model\View\Result\Page
      */
-    protected function _initAction()
+    private function _initAction()
     {
-        // load layout, set active menu and breadcrumbs
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('Smile_Contacts::questions')
@@ -84,9 +83,8 @@ class Edit extends Action
                 $resultRedirect = $this->resultRedirectFactory->create();
                 return $resultRedirect->setPath('*/*/');
             }
-            $this->_coreRegistry->register('contacts_question', $model);
+            $this->coreRegistry->register('contacts_question', $model);
         }
-
 
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->_initAction();

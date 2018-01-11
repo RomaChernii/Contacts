@@ -10,7 +10,7 @@ class Question extends AbstractDb
      *
      * @return void
      */
-    protected function _construct()
+    public function _construct()
     {
         $this->_init('smile_question', 'question_id');
     }

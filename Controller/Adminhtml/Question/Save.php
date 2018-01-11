@@ -2,6 +2,7 @@
 namespace Smile\Contacts\Controller\Adminhtml\Question;
 
 use Magento\Backend\App\Action;
+use Magento\Framework\Registry;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Mail\Template\TransportBuilder;
@@ -27,7 +28,7 @@ class Save extends Action
     /**
      * @var DataPersistorInterface
      */
-    protected $dataPersistor;
+    private $dataPersistor;
 
     /**
      * Recipient email config path
@@ -52,32 +53,32 @@ class Save extends Action
     /**
      * @var \Magento\Framework\Mail\Template\TransportBuilder
      */
-    protected $_transportBuilder;
+    private $transportBuilder;
 
     /**
      * @var \Magento\Framework\Translate\Inline\StateInterface
      */
-    protected $inlineTranslation;
+    private $inlineTranslation;
 
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
-    protected $scopeConfig;
+    private $scopeConfig;
 
     /**
      * @var \Magento\Store\Model\StoreManagerInterface
      */
-    protected $storeManager;
+    private $storeManager;
 
     /**
      * @var \Smile\Contacts\Api\QuestionRepositoryInterface
      */
-    protected $questionRepository;
+    private $questionRepository;
 
     /**
      * @var \Smile\Contacts\Model\QuestionFactory
      */
-    protected $questionFactory;
+    private $questionFactory;
 
     /**
      * @param Action\Context $context
@@ -88,7 +89,7 @@ class Save extends Action
      */
     public function __construct(
         Action\Context $context,
-        \Magento\Framework\Registry $coreRegistry,
+        Registry $coreRegistry,
         DataPersistorInterface $dataPersistor,
         TransportBuilder $transportBuilder,
         StateInterface $inlineTranslation,
@@ -97,8 +98,9 @@ class Save extends Action
         QuestionRepositoryInterface $questionRepository,
         QuestionFactory $questionFactory
     ) {
+        $this->coreRegistry = $coreRegistry;
         $this->dataPersistor = $dataPersistor;
-        $this->_transportBuilder = $transportBuilder;
+        $this->transportBuilder = $transportBuilder;
         $this->inlineTranslation = $inlineTranslation;
         $this->scopeConfig = $scopeConfig;
         $this->storeManager = $storeManager;
@@ -134,44 +136,48 @@ class Save extends Action
                     $model = $this->questionRepository->getById($id);
                 }
 
-                    // quick answer start
-                    $this->inlineTranslation->suspend();
+                $this->inlineTranslation->suspend();
 
-                    $storeScope = ScopeInterface::SCOPE_STORE;
-                    $transport = $this->_transportBuilder
-                        ->setTemplateIdentifier('contact_admin_email_answer_template')
-                        ->setTemplateOptions(
-                            [
-                                'area' => FrontNameResolver::AREA_CODE,
-                                'store' => Store::DEFAULT_STORE_ID,
-                            ]
-                        )
-                        ->setTemplateVars(['data' => $postObject])
-                        ->setFrom($this->scopeConfig->getValue(self::XML_PATH_EMAIL_SENDER, $storeScope))
-                        ->addTo($model->getEmail())
-                        ->getTransport();
+                $storeScope = ScopeInterface::SCOPE_STORE;
+                $transport = $this->transportBuilder
+                    ->setTemplateIdentifier('contact_admin_email_answer_template')
+                    ->setTemplateOptions(
+                        [
+                            'area' => FrontNameResolver::AREA_CODE,
+                            'store' => Store::DEFAULT_STORE_ID,
+                        ]
+                    )
+                    ->setTemplateVars(['data' => $postObject])
+                    ->setFrom($this->scopeConfig->getValue(self::XML_PATH_EMAIL_SENDER, $storeScope))
+                    ->addTo($model->getEmail())
+                    ->getTransport();
 
-                    $transport->sendMessage();
+                $transport->sendMessage();
 
-                    $this->inlineTranslation->resume();
-                    // quick answer end
-                    $model->setData($data);
-                    $model->setStatus(2);
-                    $this->questionRepository->save($model);
-                    $this->messageManager->addSuccess(__('You answered the question.'));
-                    $this->dataPersistor->clear('contacts_question');
+                $this->inlineTranslation->resume();
 
-                    if ($this->getRequest()->getParam('back')) {
-                        return $resultRedirect->setPath('*/*/edit', ['id' => $model->getById()]);
-                    }
-                    return $resultRedirect->setPath('*/*/');} catch (NoSuchEntityException $e) {
-                        $this->messageManager->addError($e->getMessage());
-                } catch (\Exception $e) {
-                    $this->messageManager->addException($e, __('Something went wrong while answer the question.'));
+                $model->setData($data);
+                $model->setStatus(2);
+                $this->questionRepository->save($model);
+                $this->messageManager->addSuccess(__('You answered the question.'));
+                $this->dataPersistor->clear('contacts_question');
+
+                if ($this->getRequest()->getParam('back'))
+                {
+                    return $resultRedirect->setPath('*/*/edit', ['id' => $model->getById()]);
                 }
+                return $resultRedirect->setPath('*/*/');
+            } catch (NoSuchEntityException $e) {
+                    $this->messageManager->addError($e->getMessage());
+            } catch (\Exception $e) {
+                    $this->messageManager->addException($e, __('Something went wrong while answer the question.'));
+            }
 
             $this->dataPersistor->set('contacts_questions', $data);
-            return $resultRedirect->setPath('*/*/edit', ['question_id' => $this->getRequest()->getParam('question_id')]);
+            return $resultRedirect->setPath(
+                '*/*/edit',
+                ['question_id' => $this->getRequest()->getParam('question_id')]
+            );
         }
 
         return $resultRedirect->setPath('*/*/');

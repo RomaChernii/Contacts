@@ -19,28 +19,27 @@ class QuestionRepository implements QuestionRepositoryInterface
     /**
      * @var ResourceQuestion
      */
-    protected $resource;
+    private $resource;
 
     /**
      * @var ResourceQuestionFactory
      */
-    protected $questionFactory;
+    private $questionFactory;
 
     /**
      * @var QuestionCollectionFactory
      */
-    protected $questionCollectionFactory;
+    private $questionCollectionFactory;
 
     /**
      * @var QuestionSearchResultsInterfaceFactory
      */
-    protected $searchResultsFactory;
+    private $searchResultsFactory;
 
     /**
      * @var QuestionInterfaceFactory
      */
-    protected $dataQuestionFactory;
-
+    public $dataQuestionFactory;
 
     public function __construct(
         ResourceQuestion $resource,
