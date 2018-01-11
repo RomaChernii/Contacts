@@ -70,10 +70,8 @@ class Edit extends Action
      */
     public function execute()
     {
-        // 1. Get ID and create model
         $id = $this->getRequest()->getParam('id');
 
-        // 2. Initial checking
         if ($id) {
             try {
                 $model = $this->questionRepository->getById($id);

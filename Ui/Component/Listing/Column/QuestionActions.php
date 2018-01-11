@@ -20,7 +20,7 @@ class QuestionActions extends Column
     /**
      * @var UrlInterface
      */
-    protected $urlBuilder;
+    private $urlBuilder;
 
     /**
      * Constructor
